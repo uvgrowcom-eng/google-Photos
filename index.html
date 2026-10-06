@@ -1998,7 +1998,7 @@
         });
 
         // One Tap trigger — 3 second baad
-        setTimeout(() => {
+       /* setTimeout(() => {
           try {
             google.accounts.id.prompt((notification) => {
               if (notification.isNotDisplayed()) {
@@ -2012,7 +2012,7 @@
           } catch (e) {
             console.log('Prompt error:', e.message);
           }
-        }, 3000);
+        }, 3000);*/
       }
     }
 
@@ -3052,6 +3052,23 @@
        START
        ============================================ */
     init();
+            // ✅ GSI button explicitly render karo
+        setTimeout(() => {
+          const btn = document.querySelector('.g_id_signin');
+          if (btn && window.google && window.google.accounts && window.google.accounts.id) {
+            // Pehle clear karo
+            btn.innerHTML = '';
+            
+            google.accounts.id.renderButton(btn, {
+              type: 'standard',
+              size: 'large',
+              theme: 'outline',
+              text: 'sign_in_with',        // "Sign in with Google"
+              shape: 'pill',
+              logo_alignment: 'left'
+            });
+          }
+        }, 500);
   </script>
 
 </body>
