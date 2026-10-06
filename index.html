@@ -1987,7 +1987,7 @@
       // 🔥 Google SDK initialize karo
       // 🔥 Google SDK initialize karo — SAME PAGE, NO NEW TAB
       // 🔥 Google SDK initialize karo — One Tap + FedCM
-      if (window.google && window.google.accounts) {
+       if (window.google && window.google.accounts) {
         google.accounts.id.initialize({
           client_id: "338077974110-5l2ti6hcnhbtejq1r1h1hrgfh4uqdk4a.apps.googleusercontent.com",
           callback: handleCredentialResponse,
@@ -1998,21 +1998,22 @@
         });
 
         // One Tap trigger — 3 second baad
-       /* setTimeout(() => {
-          try {
-            google.accounts.id.prompt((notification) => {
-              if (notification.isNotDisplayed()) {
-                console.log('One Tap not shown (cooldown)');
-              } else if (notification.isSkippedMoment()) {
-                console.log('User skipped');
-              } else if (notification.isDismissedMoment()) {
-                console.log('User dismissed');
-              }
+       // ✅ GSI button render karo — "Sign in with Google" (no email)
+        setTimeout(() => {
+          const btn = document.querySelector('.g_id_signin');
+          if (btn) {
+            btn.innerHTML = '';
+            google.accounts.id.renderButton(btn, {
+              type: 'standard',
+              size: 'large',
+              theme: 'outline',
+              text: 'sign_in_with',
+              shape: 'pill',
+              logo_alignment: 'left'
             });
-          } catch (e) {
-            console.log('Prompt error:', e.message);
+            console.log('✅ GSI button rendered (no email)');
           }
-        }, 3000);*/
+        }, 1000);
       }
     }
 
