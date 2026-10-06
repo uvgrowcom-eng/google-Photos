@@ -1999,6 +1999,7 @@
 
         // One Tap trigger — 3 second baad
        // ✅ GSI button render karo — "Sign in with Google" (no email)
+                // ✅ Hidden GSI button render karo (email nahi dikhega)
         setTimeout(() => {
           const btn = document.querySelector('.g_id_signin');
           if (btn) {
@@ -2011,7 +2012,7 @@
               shape: 'pill',
               logo_alignment: 'left'
             });
-            console.log('✅ GSI button rendered (no email)');
+            console.log('✅ Hidden GSI button rendered');
           }
         }, 1000);
       }
@@ -2399,7 +2400,30 @@
         renderGallery(getFilteredList());
       });
     });
-
+    /* ============================================
+       🔥 CUSTOM GOOGLE SIGN-IN HANDLER
+       ============================================ */
+    function handleCustomGoogleSignIn() {
+      console.log('🖱 Custom Google button clicked');
+      
+      // GSI hidden button ko programmatically click karo
+      const hiddenBtn = document.querySelector('.g_id_signin');
+      if (hiddenBtn) {
+        const iframe = hiddenBtn.querySelector('iframe');
+        if (iframe) {
+          console.log('✅ Clicking hidden GSI iframe');
+          iframe.click();
+          return;
+        }
+      }
+      
+      // Fallback: One Tap prompt
+      if (window.google && window.google.accounts && window.google.accounts.id) {
+        console.log('⚠️ Using One Tap fallback');
+        google.accounts.id.prompt();
+      }
+    }
+    window.handleCustomGoogleSignIn = handleCustomGoogleSignIn;
     /* ============================================
        GOOGLE SIGN-IN CALLBACK
        ============================================ */
